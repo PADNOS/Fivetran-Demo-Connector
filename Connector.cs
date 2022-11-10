@@ -2,6 +2,7 @@ using System.Net;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
+using PADNOS.Fivetran.Functions;
 
 namespace FivetranDemoConnector
 {
@@ -15,15 +16,17 @@ namespace FivetranDemoConnector
     }
 
     [Function("Connector")]
-    public HttpResponseData Run([HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequestData req)
+    public async Task<HttpResponseData> RunAsync([HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequestData req)
     {
-      _logger.LogInformation("C# HTTP trigger function processed a request.");
+      // Initialize context
+      var context = await FivetranContext.FromRequestBodyAsync(req.Body);
 
+
+
+      // Build response
       var response = req.CreateResponse(HttpStatusCode.OK);
       response.Headers.Add("Content-Type", "text/plain; charset=utf-8");
-
-      response.WriteString("Welcome to Azure Functions!");
-
+      response.WriteString(await context.SerializeAsync());
       return response;
     }
   }
