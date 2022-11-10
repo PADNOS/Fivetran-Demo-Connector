@@ -1,4 +1,4 @@
-# FivetranDemoConnector
+# Fivetran Demo Connector
 Example Azure Function for use as a Fivetran connector
 
 All code related to Fivetran is stored in `Connector.cs`. All other files are generated as part of Visual Studio's Azure Function project template (with the HttpTrigger option). The API used by this project (https://weather.padnos.com/api) is private and is only meant as a placeholder for a real API.
